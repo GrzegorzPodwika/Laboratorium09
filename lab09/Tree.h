@@ -43,6 +43,7 @@ public:
 	void TreeInorder(TreeElement *rt, int spaceBeetweenNodes, int lvlOfRoot = 0);
 	TreeElement* getLastLeaf();
 	bool isRightChild();
+	void setPromisingFlag(bool promFlag);
 };
 
 

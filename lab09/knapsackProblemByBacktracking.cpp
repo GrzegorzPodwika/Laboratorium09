@@ -150,6 +150,7 @@ void backtrackingAlgorithm(Tree &root, std::vector<int>& priceOfItems, std::vect
 					i--;
 				}
 				//lackOfItemX = i;
+				root.setPromisingFlag(false);
 				i--;
 			}
 		}

@@ -200,6 +200,11 @@ bool Tree::isRightChild()
 		return false;
 }
 
+void Tree::setPromisingFlag(bool promFlag)
+{
+	lastLeaf->isPromisingFlag = promFlag;
+}
+
 int Tree::size()
 {
 	return levelOfRoot;
