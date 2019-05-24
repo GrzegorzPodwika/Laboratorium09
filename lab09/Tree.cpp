@@ -1,18 +1,9 @@
 #include "Tree.h"
-#include <iostream>
+
 using namespace std;
 
 Tree::~Tree()
-{
-	//TreeElement *tmp = nullptr;
-
-	//while (root != nullptr)
-	//{
-	//	tmp = lastLeaf->parent;
-	//	delete lastLeaf;
-	//	lastLeaf = tmp;
-	//}
-}
+{}
 
 void Tree::push(int profit, int weight, int bound, bool isPromisingFlag)
 {
@@ -39,15 +30,9 @@ void Tree::push(int profit, int weight, int bound, bool isPromisingFlag)
 		if (root != lastLeaf)
 		{
 			if (lastLeaf->leftChild == nullptr)
-			{
-				//pop();
 				pushLeft(profit, weight, bound, isPromisingFlag);
-			}
 			else
-			{
-				//pop();
-				pushRight(profit, weight, bound, isPromisingFlag);
-			}
+				pushRight(profit, weight, bound, isPromisingFlag);		
 		}
 		else
 		{
@@ -116,38 +101,6 @@ void Tree::pop()
 void Tree::showWholeTree()
 {
 	TreeInorder(root, levelOfRoot);
-	//TreeElement *tmpL = root;
-	//TreeElement *tmpR = root;
-	//int i{}, j{};
-	//while (tmpL != nullptr)
-	//{
-	//	if (i == this->size())
-	//	{
-	//		break;
-	//	}
-
-	//	cout << i << " LEWY p = " << tmpL->profit << ", w = " << tmpL->weight << ", b = " << tmpL->bound << endl;
-
-	//	if (tmpL->leftChild != nullptr) 
-	//	{
-	//		tmpL = tmpL->leftChild;
-	//	}
-
-	//	if(tmpR->rightChild == nullptr)
-	//		tmpR = tmpL;
-	//	else if (tmpR->rightChild != nullptr)
-	//	{
-	//		tmpR = tmpR->rightChild;
-	//		cout << i+1 << " PRAWY p = " << tmpR->profit << ", w = " << tmpR->weight << ", b = " << tmpR->bound << endl;
-	//	}
-	//	
-	//	if (tmpL->leftChild == nullptr)
-	//		tmpL = tmpR;
-
-	//	i++;
-	//	j++;
-	//}
-	//cout << endl;
 }
 
 void Tree::TreeInorder(TreeElement * rt, int spaceBeetweenNodes, int lvlOfRoot)
@@ -175,15 +128,10 @@ void Tree::TreeInorder(TreeElement * rt, int spaceBeetweenNodes, int lvlOfRoot)
 		}
 
 		cout << lvlOfRoot << " b = " << rt->bound << endl<<endl;
-
 		spaceBeetweenNodes--;
 
-		//cout << lvlOfRoot << " p = " << rt->profit << ", w = " << rt->weight << ", b = " << rt->bound << endl;
-
 		TreeInorder(rt->leftChild, spaceBeetweenNodes, lvlOfRoot + 1);
-
 		TreeInorder(rt->rightChild, spaceBeetweenNodes, lvlOfRoot + 1);
-
 	}
 }
 
@@ -205,6 +153,34 @@ void Tree::setPromisingFlag(bool promFlag)
 	lastLeaf->isPromisingFlag = promFlag;
 }
 
+void Tree::saveDataToFile(std::fstream &outFile)
+{
+	TreeInOrderToFile(outFile, root);
+}
+
+void Tree::TreeInOrderToFile(std::fstream & outFile, TreeElement * rt, int lvlOfRoot)
+{
+	if (rt)
+	{
+		outFile << lvlOfRoot << " p = " << rt->profit << endl;
+		outFile << lvlOfRoot << " w = " << rt->weight << endl;
+		outFile << lvlOfRoot << " b = " << rt->bound << endl << endl;
+
+		TreeInOrderToFile(outFile, rt->leftChild, lvlOfRoot + 1);
+		TreeInOrderToFile(outFile, rt->rightChild, lvlOfRoot + 1);
+	}
+}
+
+int Tree::getMaxProfit()
+{
+	return maxProfit;
+}
+
+void Tree::setMaxProfit(int maxProf)
+{
+	maxProfit = maxProf;
+}
+
 int Tree::size()
 {
 	return levelOfRoot;
@@ -212,10 +188,17 @@ int Tree::size()
 
 bool Tree::haveParentTwoChildren()
 {
-	if (lastLeaf->parent->leftChild != nullptr && lastLeaf->parent->rightChild != nullptr)
-		return true;
-	else
+	if (root == lastLeaf)
+	{
 		return false;
+	}
+	else
+	{
+		if (lastLeaf->parent->leftChild != nullptr && lastLeaf->parent->rightChild != nullptr)
+			return true;
+		else
+			return false;
+	}
 }
 
 bool Tree::isPromisingNode()
